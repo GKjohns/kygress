@@ -25,11 +25,9 @@ def regress(
 
     def is_stat_sig(p_vals, significance_level_, fdr_correction_):
 
-        # if fdr_correction_ and fdr_correction_ in (True, 'fdr'):
-        #     ranks = np.argsort(abs(p_vals)) + 1
-        #     thresholds = significance_level_ * ranks / len(p_vals)
-        if fdr_correction_:
-            raise NotImplementedError('Need to implement fdr correction, use None!')
+        if fdr_correction_ and fdr_correction_ in (True, 'fdr'):
+            ranks = np.argsort(abs(p_vals)) + 1
+            thresholds = significance_level_ * ranks / len(p_vals)
         else:
             thresholds = significance_level_
 
@@ -69,6 +67,6 @@ def regress(
             .set_index(['param', 'target'])
         )
 
-    if isinstance(y, list):   # single target case
+    if isinstance(y, list):   # multiple hypotheses
         return pd.concat([regress_(X, target, df, keep_intercept, fdr_correction, significance_level, formula) for target in y])
     return regress_(X, y, df, keep_intercept, fdr_correction, significance_level, formula)

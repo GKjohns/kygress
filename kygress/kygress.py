@@ -25,11 +25,9 @@ def regress(
 
     def is_stat_sig(p_vals, significance_level_, fdr_correction_):
 
-        # if fdr_correction_ and fdr_correction_ in (True, 'fdr'):
-        #     ranks = np.argsort(abs(p_vals)) + 1
-        #     thresholds = significance_level_ * ranks / len(p_vals)
-        if fdr_correction_:
-            raise NotImplementedError('Need to implement fdr correction, use None!')
+        if fdr_correction_ and fdr_correction_ in (True, 'fdr'):
+            ranks = np.argsort(abs(p_vals)) + 1
+            thresholds = significance_level_ * ranks / len(p_vals)
         else:
             thresholds = significance_level_
 

@@ -69,6 +69,6 @@ def regress(
             .set_index(['param', 'target'])
         )
 
-    if isinstance(y, list):   # single target case
+    if isinstance(y, list):   # multiple hypotheses
         return pd.concat([regress_(X, target, df, keep_intercept, fdr_correction, significance_level, formula) for target in y])
     return regress_(X, y, df, keep_intercept, fdr_correction, significance_level, formula)

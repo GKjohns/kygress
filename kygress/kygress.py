@@ -25,9 +25,15 @@ def regress(
 
     def is_stat_sig(p_vals, significance_level_, fdr_correction_):
 
-        if fdr_correction_ and fdr_correction_ in (True, 'fdr'):
-            ranks = np.argsort(abs(p_vals)) + 1
-            thresholds = significance_level_ * ranks / len(p_vals)
+        if fdr_correction_:
+            if fdr_correction_ in (True, 'fdr'):
+                ranks = np.argsort(abs(p_vals)) + 1
+                thresholds = significance_level_ * ranks / len(p_vals)
+            elif fdr_correction == 'bonferroni':
+                thresholds = significance_level_ / len(p_vals)
+            else:
+                message = f'Got fdr_correction= {fdr_correction_}, kygress doesn\'t support this correction method'
+                raise NotImplementedError(message)
         else:
             thresholds = significance_level_
 

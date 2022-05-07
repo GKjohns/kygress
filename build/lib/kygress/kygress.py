@@ -25,9 +25,11 @@ def regress(
 
     def is_stat_sig(p_vals, significance_level_, fdr_correction_):
 
-        if fdr_correction_ and fdr_correction_ in (True, 'fdr'):
-            ranks = np.argsort(abs(p_vals)) + 1
-            thresholds = significance_level_ * ranks / len(p_vals)
+        # if fdr_correction_ and fdr_correction_ in (True, 'fdr'):
+        #     ranks = np.argsort(abs(p_vals)) + 1
+        #     thresholds = significance_level_ * ranks / len(p_vals)
+        if fdr_correction_:
+            raise NotImplementedError('Need to implement fdr correction, use None!')
         else:
             thresholds = significance_level_
 
@@ -61,19 +63,11 @@ def regress(
         if not keep_intercept:
             df_out = df_out.query('param != "intercept"')
 
-        else:
-            df_out = (
-                df_out
-                .sort_values(['param', 'target'])
-                .set_index(['param', 'target'])
-            )
-
-        if fdr_correction_ and fdr_correction_ in (True, 'fdr'):
-            df_out = df_out.assign()
-
-
-
-        return df_out
+        return (
+            df_out
+            .sort_values(['param', 'target'])
+            .set_index(['param', 'target'])
+        )
 
     if isinstance(y, list):   # single target case
         return pd.concat([regress_(X, target, df, keep_intercept, fdr_correction, significance_level, formula) for target in y])

@@ -1,6 +1,6 @@
 setup:
 	pip install .
 
-test:
+test: setup
 	python3 ./tests/test.py
 	

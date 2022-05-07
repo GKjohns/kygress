@@ -63,19 +63,11 @@ def regress(
         if not keep_intercept:
             df_out = df_out.query('param != "intercept"')
 
-        else:
-            df_out = (
-                df_out
-                .sort_values(['param', 'target'])
-                .set_index(['param', 'target'])
-            )
-
-        if fdr_correction_ and fdr_correction_ in (True, 'fdr'):
-            df_out = df_out.assign()
-
-
-
-        return df_out
+        return (
+            df_out
+            .sort_values(['param', 'target'])
+            .set_index(['param', 'target'])
+        )
 
     if isinstance(y, list):   # single target case
         return pd.concat([regress_(X, target, df, keep_intercept, fdr_correction, significance_level, formula) for target in y])

@@ -4,9 +4,9 @@ import statsmodels.formula.api as smf
 
 
 def regress(
+    df,
     X,
     y,
-    df,
     keep_intercept=False,
     fdr_correction=None,
     significance_level=.05,
@@ -39,7 +39,7 @@ def regress(
 
         return p_vals < thresholds
 
-    def regress_(X_, y_, df_, keep_intercept_, fdr_correction_, significance_level_, formula_):
+    def regress_(df_, X_, y_, keep_intercept_, fdr_correction_, significance_level_, formula_):
         '''regression on a single target'''
 
         formula_ = formula_ if formula_ else f'{y_} ~ {" + ".join(X_)}'
@@ -74,5 +74,5 @@ def regress(
         )
 
     if isinstance(y, list):   # multiple hypotheses
-        return pd.concat([regress_(X, target, df, keep_intercept, fdr_correction, significance_level, formula) for target in y])
-    return regress_(X, y, df, keep_intercept, fdr_correction, significance_level, formula)
+        return pd.concat([regress_(df, X, target, keep_intercept, fdr_correction, significance_level, formula) for target in y])
+    return regress_(df, X, y, keep_intercept, fdr_correction, significance_level, formula)

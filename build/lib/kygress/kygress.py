@@ -37,7 +37,7 @@ def regress(
                     'kygress doesn\'t support this correction method'
                 )
                 raise NotImplementedError(message)
-        else:
+        else:   # fdr_correction == False
             is_stat_sig = p_vals < significance_level_
 
         return is_stat_sig
@@ -75,7 +75,7 @@ def regress(
             .sort_values(['param', 'target'])
             .set_index(['param', 'target'])
         )
-    
+
     if isinstance(y, list):   # multiple hypotheses
         return pd.concat([regress_(df, X, target, keep_intercept, fdr_correction, significance_level, formula) for target in y])
     return regress_(df, X, y, keep_intercept, fdr_correction, significance_level, formula)

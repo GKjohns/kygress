@@ -1,4 +1,4 @@
-./kygress/.ipynb_checkpoints/
-./kygress/__pycache__/__init__.cpython-39.pyc
-./tests/.ipynb_checkpoints/
-./tests/test_notebook.ipynb
+kygress/.ipynb_checkpoints/
+kygress/__pycache__/__init__.cpython-39.pyc
+tests/.ipynb_checkpoints/
+tests/test_notebook.ipynb

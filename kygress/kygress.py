@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import statsmodels.formula.api as smf
+from statsmodels.stats.multitest import fdrcorrection as fdr_func
 
 
 def regress(
@@ -27,17 +28,19 @@ def regress(
 
         if fdr_correction_:
             if fdr_correction_ in (True, 'fdr'):
-                ranks = np.argsort(abs(p_vals)) + 1
-                thresholds = significance_level_ * ranks / len(p_vals)
-            elif fdr_correction == 'bonferroni':
-                thresholds = significance_level_ / len(p_vals)
+                is_stat_sig = fdr_func(p_vals, alpha=significance_level_)[0]
+            elif fdr_correction_ == 'bonferroni':
+                is_stat_sig = p_vals < (significance_level_ / len(p_vals))
             else:
-                message = f'Got fdr_correction= {fdr_correction_}, kygress doesn\'t support this correction method'
+                message = (
+                    f'Got fdr_correction=\'{fdr_correction_}\', '
+                    'kygress doesn\'t support this correction method'
+                )
                 raise NotImplementedError(message)
-        else:
-            thresholds = significance_level_
+        else:   # fdr_correction == False
+            is_stat_sig = p_vals < significance_level_
 
-        return p_vals < thresholds
+        return is_stat_sig
 
     def regress_(df_, X_, y_, keep_intercept_, fdr_correction_, significance_level_, formula_):
         '''regression on a single target'''
